@@ -1,7 +1,7 @@
 import React from "react";
 import theme from "./theme/theme";
 import MainRoutes from "./main/Main";
-import { BrowserRouter as Router } from "react-router-dom";
+import { Outlet, BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 
 function App() {
