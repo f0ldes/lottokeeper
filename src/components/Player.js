@@ -1,12 +1,19 @@
-import { useState } from 'react';
+import useRequest from '../functions/hook/useRequest';
+import { useEffect, useState } from 'react';
+import { getUserData } from '../functions/fetch/fetchUser'; 
 import {Box, Grid, Typography, List, ListItem, ListItemText, Button } from '@mui/material';
-
 
 /* info panel elements for user: */
 const UserName = () => {
+    const [username, setUsername] = useState(null);
+    const { executeRequest, data: userData } = useRequest(getUserData);
+    useEffect(() => {
+        executeRequest()
+    }, []);
+
     return (
         <Typography>
-            UserName
+            {userData && userData ? userData.name : 'Please Enter your name'}
         </Typography>
     )
 };
