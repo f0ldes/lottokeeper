@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import {Box, Grid, Typography, List, ListItem, ListItemText, Button } from '@mui/material';
 
-
 /* info panel elements for user: */
 const UserName = () => {
     return (
