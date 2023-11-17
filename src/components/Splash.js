@@ -12,7 +12,7 @@ const TextPanel = () => {
 
 const ButtonPanel = () => (
     <Box width='100%' display="flex" justifyContent="center" alignItems="center" gap={2}>
-        <Button component={Link} to='/player' > Test Button 1</Button>
+        <Button component={Link} to='/user' > Test Button 1</Button>
         <Button> Test Button 2</Button>
     </Box>
 );
