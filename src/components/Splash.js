@@ -13,12 +13,12 @@ const TextPanel = () => (
 
 //ezt ki lehet esetleg szervezni;
 const ButtonPanel = () => {
-    const { isAdmin, setIsAdmin } = useContext(Context);
+    const { setIsAdmin } = useContext(Context);
     const navigate = useNavigate();
 
     const handleAdminRole = () => {
         setIsAdmin(true);
-       navigate('/user');
+        navigate('/user');
    };
 
     const handleUserRole = () => {
