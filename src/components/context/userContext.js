@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { getUserData } from "../../functions/fetch/fetchUser";
 import useRequest from "../../functions/hook/useRequest";
+import { updateName } from "../../functions/fetch/updateUserName";
 
 const Context = createContext();
 
@@ -13,8 +14,19 @@ export const ContextProvider = ({ children }) => {
         getUser(isAdmin)
     }, [isAdmin]);
 
+    const updateUsername = async (newName) => {
+        try {
+           await updateName(newName);
+           await getUser(isAdmin);
+        } catch (error) {
+            console.log(error.response?.data?.message);
+        };
+    };
+
+
+
     return (
-        <Context.Provider value={{ isAdmin, setIsAdmin, userData, loading, error }}>
+        <Context.Provider value={{ isAdmin, setIsAdmin, userData, loading, error, updateUsername }}>
             {children}
         </Context.Provider>
     )
