@@ -2,8 +2,8 @@ import UserName from './elements/UserName/UserName';
 import Balance from './elements/Balance/Balance';
 import ListElement from './elements/List/List';
 import CreateTicket from './elements/CreateTicket/CreateTicket';
-
-import {Box, Grid } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Box, Grid, Button } from '@mui/material';
 
 const InfoPanel = () => {
     return (
@@ -18,7 +18,7 @@ const InfoPanel = () => {
 /* main panel: */
 const UserPanel = () => {
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight='100vh'>
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight='100vh' flexDirection='column'>
             <Grid container justifyContent="center" alignItems="center">
                 <Grid item>
                     <InfoPanel />
@@ -27,6 +27,7 @@ const UserPanel = () => {
                     <ListElement />
                 </Grid>
             </Grid>
+            <Button component={Link} to='/' > Vissza </Button>
         </Box>
     )
 };
