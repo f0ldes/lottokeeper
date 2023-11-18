@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Typography } from "@mui/material";
+import Context from "../../context/userContext";
 
 
 const UserName = () => {
-    const [username, setUsername] = useState(null);
+    const { isAdmin } = useContext(Context);
     
     return (
         <Typography>
