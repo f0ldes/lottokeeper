@@ -1,21 +1,38 @@
 import { Box, Button, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import Context from "./context/userContext";
 
-const TextPanel = () => {
+
+const TextPanel = () => (
+    <Typography variant="h1" align="center" gutterBottom>
+        Welcome to Lottokeeper!
+        {/* meg ide a johet az elozo nyeroszamok */}
+    </Typography>
+);
+
+//ezt ki lehet esetleg szervezni;
+const ButtonPanel = () => {
+    const { isAdmin, setIsAdmin } = useContext(Context);
+    const navigate = useNavigate();
+
+    const handleAdminRole = () => {
+        setIsAdmin(true);
+       navigate('/user');
+   };
+
+    const handleUserRole = () => {
+        setIsAdmin(false);
+        navigate('/user');
+    };
+
     return (
-        <Typography variant="h1" align="center" gutterBottom>
-            Welcome to Lottokeeper!
-            {/* meg ide a johet az elozo nyeroszamok */}
-        </Typography>
+        <Box width='100%' display="flex" justifyContent="center" alignItems="center" gap={2}>
+            <Button onClick={handleUserRole} > Jatekos Vagyok </Button>
+            <Button onClick={handleAdminRole} > Uzemeleteto Vagyok </Button>
+        </Box>
     )
 };
-
-const ButtonPanel = () => (
-    <Box width='100%' display="flex" justifyContent="center" alignItems="center" gap={2}>
-        <Button component={Link} to='/user' > Test Button 1</Button>
-        <Button> Test Button 2</Button>
-    </Box>
-);
 
 const SplashPage = () => {
     return (

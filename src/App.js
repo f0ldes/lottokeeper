@@ -3,13 +3,16 @@ import theme from "./theme/theme";
 import MainRoutes from "./layout/Layout";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider, CssBaseline } from "@mui/material";
+import { ContextProvider } from "./components/context/userContext";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
         <Router>
-          <MainRoutes />
+          <ContextProvider>
+            <MainRoutes />
+          </ContextProvider>
         </Router>
     </ThemeProvider>
   );
