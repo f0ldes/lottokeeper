@@ -1,4 +1,4 @@
-import UserName from './elements/UserName/UserName';
+import UserName from './elements/Username/UserName';
 import Balance from './elements/Balance/Balance';
 import ListElement from './elements/List/List';
 import CreateTicket from './elements/CreateTicket/CreateTicket';
@@ -27,7 +27,7 @@ const UserPanel = () => {
                     <ListElement />
                 </Grid>
             </Grid>
-            <Button component={Link} to='/' > Vissza </Button>
+            <Button component={Link} to='/'  > Vissza </Button>
         </Box>
     )
 };

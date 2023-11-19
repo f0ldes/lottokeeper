@@ -23,8 +23,6 @@ export const ContextProvider = ({ children }) => {
         };
     };
 
-
-
     return (
         <Context.Provider value={{ isAdmin, setIsAdmin, userData, loading, error, updateUsername }}>
             {children}
