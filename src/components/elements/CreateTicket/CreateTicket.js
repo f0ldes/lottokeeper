@@ -4,7 +4,7 @@ import Context from "../../context/userContext";
 import { saveTickets } from "../../../functions/fetch/saveTickets";
 
 const CreateTicket = () => {
-    const { userData } = useContext(Context);
+    const { userData, updateTicketList } = useContext(Context);
     const [userNumbers, setUserNumbers] = useState([]);
     
     //esetleg ezt is ki lehet szervezni:
@@ -16,8 +16,10 @@ const CreateTicket = () => {
     };
 
     const playNumbers = () => {
+        /* userData id check mas a contextbe, legyen ugyanaz a stilo... */
         saveTickets(userData?.id, 1, userNumbers );
         setUserNumbers('numbers are registered for the game!')
+        updateTicketList();
     };
 
     return (
