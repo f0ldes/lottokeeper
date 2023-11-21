@@ -1,10 +1,10 @@
 import { Box, Typography, Button, TextField } from "@mui/material";
 import { useContext, useState } from "react";
 import Context from "../../context/userContext";
-import { saveTickets } from "../../../functions/fetch/saveTickets";
+import { saveTickets } from "../../../utils/fetch/saveTickets";
 
 const CreateTicket = () => {
-    const { userData, updateTicketList } = useContext(Context);
+    const { userData, updateTicketList, updateUserBalance } = useContext(Context);
     const [userNumbers, setUserNumbers] = useState([]);
     
     //esetleg ezt is ki lehet szervezni:
@@ -15,20 +15,21 @@ const CreateTicket = () => {
         };
     };
 
-    const playNumbers = () => {
+    const playNumbers = async () => {
         /* userData id check mas a contextbe, legyen ugyanaz a stilo... */
-        saveTickets(userData?.id, 1, userNumbers );
+        await saveTickets(userData, 1, userNumbers );
         setUserNumbers('numbers are registered for the game!')
         updateTicketList();
+        updateUserBalance();
     };
 
     return (
         <Box flexDirection='column'>
-            <Typography> Szamain:  {userNumbers} </Typography>
+            <Typography> Szamaim:  {userNumbers} </Typography>
             <TextField value={userNumbers === 'numbers are registered for the game!' ? '' : userNumbers} onChange={handleNumberChange} variant='standard' inputProps={{ maxLength: 5 }}  />
             <Button fullWidth onClick={playNumbers} > Megjatszom </Button>
         </Box>
-    )
+    );
 };
 
 export default CreateTicket;

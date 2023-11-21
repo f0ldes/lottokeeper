@@ -1,12 +1,13 @@
 import { Typography } from "@mui/material";
-import { useState } from "react";
+import { useContext } from "react";
+import Context from "../../context/userContext";
 
 
 const Balance = () => {
-    const [balance, setBalance] = useState('6000 Ache')
+    const { userData } = useContext(Context);
     return (
         <Typography>
-            This is the balance: {balance}
+            Your avaiable balance: <strong> {userData ? userData?.balance : 'no balance is avaiable.'} </strong>
         </Typography>
     )
 };
