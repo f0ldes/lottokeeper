@@ -4,6 +4,7 @@ import ListElement from './elements/List/List';
 import CreateTicket from './elements/CreateTicket/CreateTicket';
 import { Link } from 'react-router-dom';
 import { Box, Grid, Button } from '@mui/material';
+import DrawGameComponent from './elements/DrawGame/DrawGame';
 
 const InfoPanel = () => {
     return (
@@ -27,6 +28,7 @@ const UserPanel = () => {
                     <ListElement />
                 </Grid>
             </Grid>
+            <DrawGameComponent />
             <Button component={Link} to='/'  > Vissza </Button>
         </Box>
     )

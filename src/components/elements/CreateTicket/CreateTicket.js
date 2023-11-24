@@ -4,7 +4,7 @@ import Context from "../../context/userContext";
 import { saveTickets } from "../../../utils/fetch/saveTickets";
 
 const CreateTicket = () => {
-    const { userData, updateTicketList, updateUserBalance } = useContext(Context);
+    const { userData, updateTicketList, handleUserBalance, gameData } = useContext(Context);
     const [userNumbers, setUserNumbers] = useState([]);
     
     //esetleg ezt is ki lehet szervezni:
@@ -17,10 +17,10 @@ const CreateTicket = () => {
 
     const playNumbers = async () => {
         /* userData id check mas a contextbe, legyen ugyanaz a stilo... */
-        await saveTickets(userData, 1, userNumbers );
+        await saveTickets(userData, gameData.id, userNumbers );
         setUserNumbers('numbers are registered for the game!')
         updateTicketList();
-        updateUserBalance();
+        handleUserBalance();
     };
 
     return (
