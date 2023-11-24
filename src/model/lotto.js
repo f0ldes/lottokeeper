@@ -14,11 +14,11 @@ class Lotto {
     };
 
     draw(ticketData) {
-
         this.winningNumbers = this.generateWinningNumbers();
         const winners = this.findWinners(ticketData, this.winningNumbers);
         const prizes = this.distributePrize(winners);
-
+        this.isActive = 0;
+        
         return { winners, prizes, winningNumbers: this.winningNumbers};
     };
 
@@ -34,7 +34,7 @@ class Lotto {
     };
 
     calculatePrize() {
-        const prizePercentage = 0.60; //---> 0.40 az admine: .gm et atirni .comissionra -> azt returnolni -> hozza adni gm balanchoz. 
+        const prizePercentage = 0.60; //---> 0.40 az admine: .gm et atirni .comissionra -> azt returnolni -> hozza adni gm balanchoz. || de  igazabol le is lehet csak vonn
         this.prize = prizePercentage * this.ticketsSold * this.ticketPrice;
         return prizePercentage * this.ticketsSold * this.ticketPrice;
     };

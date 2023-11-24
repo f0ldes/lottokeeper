@@ -7,6 +7,7 @@ import { getTicketsData } from "../../utils/fetch/fetchTickets";
 import { getGamaData } from "../../utils/fetch/fetchGame";
 import { updateUserBalance } from '../../utils/fetch/updateBalance';
 import { updateGameData } from "../../utils/fetch/updateGameData";
+import { updateWinners } from "../../utils/fetch/updateWinners";
 
 const Context = createContext();
 
@@ -16,9 +17,10 @@ export const ContextProvider = ({ children }) => {
         return savedIsAdmin !== null ? JSON.parse(savedIsAdmin) : false;
     });
     const [currentGame, setCurrentGame] = useState(null);
+    // talan ide lehetne rakni egy statet a huzas eredmenyenek 
     const {executeRequest:getUser, data:userData } = useRequest(getUserData);
     const {executeRequest:getTickets, data:ticketsData } = useRequest(getTicketsData);
-    const {executeRequest:getAllTicketsData, data:allTicketsData} = useRequest(getTicketsData);
+    const {executeRequest:getAllTicketsData, data:allTicketsData} = useRequest(getTicketsData); // maybe this should be done differently.
     const {executeRequest:getGame, data:gameData } = useRequest(getGamaData);
 
 
@@ -47,6 +49,23 @@ export const ContextProvider = ({ children }) => {
             // maybe we can add here a method to update the database too.
         }
     }, [gameData]);
+
+
+    /* triggered by the draw handler: */
+    useEffect(() => {
+        if (allTicketsData) {
+            const draw = async () => {
+                const { winners, prizes, winningNumbers } = await currentGame.draw(allTicketsData);
+                //await updateGameData(currentGame);
+                console.log(currentGame)
+                await updateWinners(winners, prizes, currentGame.prize);
+                console.log('these are the draw data: ',winners, prizes, winningNumbers);
+                console.log('currentGame:',currentGame, 'gameData:', currentGame);
+            };
+    
+            draw();
+        }
+    }, [allTicketsData]);
 
     /* should I have an other useffect here? */
     const updateUsername = async (newName) => {
@@ -90,11 +109,6 @@ export const ContextProvider = ({ children }) => {
 
     const handleDraw = async () => {
         await getAllTicketsData(null, gameData.id);
-
-        if (allTicketsData) {
-            const { winners, prizes, winningNumbers } = await currentGame.draw(allTicketsData);
-            console.log(winners, prizes, winningNumbers);
-        }
     };
 
     return (
