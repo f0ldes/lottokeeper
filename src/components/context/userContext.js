@@ -16,6 +16,10 @@ export const ContextProvider = ({ children }) => {
         const savedIsAdmin = localStorage.getItem("isAdmin");
         return savedIsAdmin !== null ? JSON.parse(savedIsAdmin) : false;
     });
+    const [winData, setWinData] = useState(() => {
+        const savedWinData = localStorage.getItem("winData");
+        return savedWinData !== null ? JSON.parse(savedWinData) : null;
+    });
     const [currentGame, setCurrentGame] = useState(null);
     // talan ide lehetne rakni egy statet a huzas eredmenyenek 
     const {executeRequest:getUser, data:userData } = useRequest(getUserData);
@@ -23,11 +27,14 @@ export const ContextProvider = ({ children }) => {
     const {executeRequest:getAllTicketsData, data:allTicketsData} = useRequest(getTicketsData); // maybe this should be done differently.
     const {executeRequest:getGame, data:gameData } = useRequest(getGamaData);
 
-
     /* update data in local sotrage: */
     useEffect(() => {
         localStorage.setItem("isAdmin", JSON.stringify(isAdmin));
     }, [isAdmin]);
+
+    useEffect(() => {
+        localStorage.setItem("winData", JSON.stringify(winData));
+    }, [winData]);
 
     /* fetching the user data on a high level, on start: */
     useEffect(() => {
@@ -37,7 +44,11 @@ export const ContextProvider = ({ children }) => {
     /* fetching the game fata, and creating the game instance: */
     useEffect(() => {
         // This effect is for fetching game data only once on component mount
-        getGame();
+        const savedWinData = localStorage.getItem('winData');  // check if theres a game drawn alrady in the localStorage. 
+        const isGameAlradyDrawn = savedWinData ? JSON.parse(savedWinData) : null; //<---- no need to check for current game data, and refressh the current game if we have a drawn game alrady. this way the current game data will only reset once the admin hit the reset button. 
+        if (!isGameAlradyDrawn) {
+            getGame();
+        };
     }, []); //isAdmin?
     
     /* Changes the current game data: */
@@ -50,22 +61,25 @@ export const ContextProvider = ({ children }) => {
         }
     }, [gameData]);
 
-
-    /* triggered by the draw handler: */
+    /* triggered by the draw handler: (nem biztos h a legjobb ha a allTicketsData triggeleri) */
     useEffect(() => {
-        if (allTicketsData) {
+        if (allTicketsData && currentGame) {
             const draw = async () => {
-                const { winners, prizes, winningNumbers } = await currentGame.draw(allTicketsData);
-                //await updateGameData(currentGame);
-                console.log(currentGame)
-                await updateWinners(winners, prizes, currentGame.prize);
-                console.log('these are the draw data: ',winners, prizes, winningNumbers);
-                console.log('currentGame:',currentGame, 'gameData:', currentGame);
+                try {
+                    const { winners, prizes, winningNumbers } = await currentGame.draw(allTicketsData);
+                    let winningUserIds = await updateWinners(winners, prizes, currentGame.prize);
+                    setWinData({
+                        winningUserIds: winningUserIds.data.data, 
+                        winningNumbers: winningNumbers,
+                        previousGameId: currentGame.gameId
+                    });
+                } catch (error) {
+                    console.error('this is the error:', error);
+                }
             };
-    
             draw();
-        }
-    }, [allTicketsData]);
+        };
+    }, [allTicketsData, currentGame]);
 
     /* should I have an other useffect here? */
     const updateUsername = async (newName) => {
@@ -78,8 +92,8 @@ export const ContextProvider = ({ children }) => {
     };
 
     //trigger this when create ticket. 
-    const updateTicketList = async() => {
-        if (userData) {
+    const updateTicketList = async () => {
+        if (userData && gameData) {
             try {
                 await getTickets(userData.id, gameData.id);
             } catch (error) {
@@ -88,7 +102,7 @@ export const ContextProvider = ({ children }) => {
         };
     };
 
-    const handleUserBalance = async() => {
+    const handleUserBalance = async () => {
         if (currentGame) {
             try {
                 if (userData) {
@@ -111,6 +125,11 @@ export const ContextProvider = ({ children }) => {
         await getAllTicketsData(null, gameData.id);
     };
 
+    console.log('currentGame:', currentGame);
+    console.log('gameData:', gameData);
+    console.log('win data:', winData);
+    console.log('current game:', currentGame);
+
     return (
         <Context.Provider value={{ 
             isAdmin, 
@@ -121,7 +140,9 @@ export const ContextProvider = ({ children }) => {
             ticketsData, 
             handleUserBalance, 
             gameData,
-            handleDraw
+            handleDraw,
+            winData,
+            setWinData
         }}>
             {children}
         </Context.Provider>
