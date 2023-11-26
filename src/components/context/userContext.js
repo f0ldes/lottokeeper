@@ -16,16 +16,24 @@ export const ContextProvider = ({ children }) => {
     const [isAdmin, setIsAdmin] = useState(() => {
         const savedIsAdmin = localStorage.getItem("isAdmin");
         return savedIsAdmin !== null ? JSON.parse(savedIsAdmin) : false;
-    });
+    }); // ezeket egy sorrossa 
     const [winData, setWinData] = useState(() => {
         const savedWinData = localStorage.getItem("winData");
         return savedWinData !== null ? JSON.parse(savedWinData) : null;
-    });
+    }); // ezeket egysorossa
     const [currentGame, setCurrentGame] = useState(null);
     const {executeRequest:getUser, data:userData } = useRequest(getUserData);
     const {executeRequest:getTickets, data:ticketsData } = useRequest(getTicketsData);
+
+    /* this is only a state for tracking when a draw should happen.  */
+    const [timeToDraw, setTimeToDraw] = useState(false);
+    const [allTicketFlag, setAllTicketFlag] = useState(null); /* this should indicate when we should fetch the data in the list component. */
     const {executeRequest:getAllTicketsData, data:allTicketsData} = useRequest(getTicketsData); // maybe this should be done differently.
+
+    
     const {executeRequest:getGame, data:gameData } = useRequest(getGamaData);
+    console.log('this is ticketsData in the console:', ticketsData);
+    console.log('this is all tickets data in the console:', allTicketsData)
 
     /* update data in local sotrage: */
     useEffect(() => {
@@ -41,7 +49,7 @@ export const ContextProvider = ({ children }) => {
         getUser(isAdmin)
     }, [isAdmin]);
 
-    /* fetching the game fata, and creating the game instance: */
+    /* fetching the game data, and creating the game instance: */
     useEffect(() => {
         /* check the local storage for win data aka. handle the case when game is drawn
            but no new game is initialized yet */
@@ -63,7 +71,7 @@ export const ContextProvider = ({ children }) => {
 
     /* triggered by the draw handler: (nem biztos h a legjobb ha a allTicketsData triggeleri) */
     useEffect(() => {
-        if (allTicketsData && currentGame) { /* make sure necessary data is present */
+        if (allTicketsData && currentGame && timeToDraw) { /* make sure necessary data is present */
             const draw = async () => {
                 try {
                     const { winners, prizes, winningNumbers } = await currentGame.draw(allTicketsData); /* call the lotto draw method */
@@ -74,8 +82,10 @@ export const ContextProvider = ({ children }) => {
                         winningNumbers: winningNumbers,
                         previousGameId: currentGame.gameId,
                         ticketsSold: currentGame.ticketsSold, 
-                        prize: currentGame.prize
+                        prize: currentGame.prize,
+                        prizes: prizes
                     }); /* set the winData. It's also used for summary. */
+                    setTimeToDraw(false); /* extra chaeck for flagging the draw mechanism */
                 } catch (error) {
                     console.error('this is the error:', error);
                 }
@@ -102,12 +112,8 @@ export const ContextProvider = ({ children }) => {
     /* handle draw: */
     const handleDraw = async () => {
         await getAllTicketsData(null, gameData.id);
+        setTimeToDraw(true)
     };
-
-    console.log('currentGame:', currentGame);
-    console.log('gameData:', gameData);
-    console.log('win data:', winData);
-    console.log('current game:', currentGame);
 
     return (
         <Context.Provider value={{ 
@@ -115,14 +121,19 @@ export const ContextProvider = ({ children }) => {
             setIsAdmin, 
             userData, 
             updateUsername, 
-            updateTicketList, 
+            updateTicketList,
+            getTickets,
+            getAllTicketsData,
+            allTicketsData,
             ticketsData, 
             handleUserBalance, 
             gameData,
             handleDraw,
             winData,
             setWinData,
-            currentGame
+            currentGame,
+            allTicketFlag,
+            setAllTicketFlag
         }}>
             {children}
         </Context.Provider>
