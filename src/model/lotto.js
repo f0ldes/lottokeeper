@@ -77,8 +77,9 @@ class Lotto {
         let ticketMap = {};
         /* fill up the map, with all the numbers, sorted, turend into an array */
         for (let i = 0; i < ticketData.length; i++) {
-            let ticketNumbers = ticketData[i].numbers.split('').map(Number);
-            ticketMap[ticketData[i].id] = ticketNumbers.sort((a , b) => a - b);
+            let ticketNumbers = JSON.parse(ticketData[i].numbers);
+            ticketNumbers = ticketNumbers.map(Number);
+            ticketMap[ticketData[i].id] = ticketNumbers.sort((a, b) => a - b)
         };
 
         /* the winners map, strong the ticket id of the winner tickets: */
@@ -132,10 +133,10 @@ class Lotto {
         return winners;
     };
 
-    reset() {
-
+    incrementTicketsSold(amount){
+        /* handler to increment sold ticket amount */
+        this.ticketsSold = this.ticketsSold + parseInt(amount);
     };
-
 };
 
 export default Lotto;

@@ -6,8 +6,8 @@ import Context from "../../context/userContext";
 const Balance = () => {
     const { userData } = useContext(Context);
     return (
-        <Typography>
-            Your avaiable balance: <strong> {userData ? userData?.balance : 'no balance is avaiable.'} </strong>
+        <Typography sx={{ border: 1, borderColor: 'secondary.main' }} >
+            Your balance: <strong> {userData ? userData?.balance : 'no balance is avaiable.'} </strong>
         </Typography>
     )
 };

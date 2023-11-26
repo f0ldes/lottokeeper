@@ -9,6 +9,7 @@ const listStyle = {
 
 const ListElement = () => {
     const { ticketsData } = useContext(Context);
+    console.log(ticketsData);
     return (
         <List dense={true} style={listStyle}>
             {ticketsData && ticketsData.map(ticket => (
