@@ -19,7 +19,7 @@ const DrawGameComponent = () => {
 
     return (
         <Box>
-            <Button onClick={ winData ? handleReset : handleDraw}>
+            <Button variant='outlined' fullWidth onClick={ winData ? handleReset : handleDraw}>
                 {winData ? 'New Game' : 'Draw Game'}
             </Button>
         </Box>

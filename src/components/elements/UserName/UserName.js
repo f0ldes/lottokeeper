@@ -1,37 +1,53 @@
 import { useContext, useState } from "react";
-import { Typography, Box, Button, TextField } from "@mui/material";
+import { Typography, Box, Button, TextField, Container } from "@mui/material";
 import Context from "../../context/userContext";
 
 const UserName = () => {
     const { isAdmin, userData, updateUsername } = useContext(Context);
     const [username, setUsername] = useState('');
 
-    if (isAdmin) {
-        return <Typography> Udvozlunk, Uzemeleteto. </Typography>
-    };
-
-    if (!isAdmin && userData && userData.name !== 'unknown') {
-        return <Typography> Hey, {userData.name}! </Typography>;
-    };
-    
-    const handlUsernameChange = (event) => {
-        setUsername(event.target.value)
+    const handleUsernameChange = (event) => {
+        setUsername(event.target.value);
     };
 
     const registerNewName = () => {
-        updateUsername(username)
+        updateUsername(username);
     };
 
+    /* Conditionally render the username / welcome message for admin: */
+    if (isAdmin) {
+        return (
+            <Box sx={{ borderColor: 'default', padding: 1 }} flexDirection="column" display='flex' justifyContent='center' alignItems='center'>
+                <Typography> Udvozlunk, Uzemeleteto! </Typography>
+            </Box>
+        );
+    }
+
+    /* The default name of all non admin type users is 'unknown' */
+    if (!isAdmin && userData?.name && userData?.name !== 'unknown') {
+        return (
+            <Box sx={{ borderColor: 'default', padding: 1 }} flexDirection="column" display='flex' justifyContent='center' alignItems='center'>
+                <Typography>Hey, {userData.name}!</Typography>
+            </Box>
+        );
+    }
+
     return (
-        <Box>
-            <TextField
-                label="Enter your name"
-                value={username}
-                onChange={handlUsernameChange}
-            />
-            <Button onClick={registerNewName}>Register</Button>
+        <Box sx={{ borderColor: 'default', padding: 1 }} flexDirection="column" display='flex' justifyContent='center' alignItems='center'>
+            <Typography> Welcome Player! </Typography>
+
+                <TextField
+                    fullWidth
+                    variant='standard'
+                    label=""
+                    placeholder="Enter your new username here."
+                    value={username}
+                    onChange={handleUsernameChange}
+                    sx={{ marginBottom: 1 }}
+                />
+            <Button fullWidth onClick={registerNewName} variant="outlined">Register Username </Button>
         </Box>
-    )
+    );
 };
 
 export default UserName;

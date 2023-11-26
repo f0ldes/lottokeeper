@@ -18,10 +18,10 @@ const CreateFakeTickets = ({numbersArray, setNumbersArray, counter, setCounter})
     return (
         <div>
             <TextField value={counter} onChange={handleInputChange} variant='standard' />
-            <Button fullWidth onClick={generateArrayOfNumbers}>Generate Numbers</Button>
+            <Button variant='outlined' fullWidth onClick={generateArrayOfNumbers}>Generate Numbers</Button>
             {
                 numbersArray && numbersArray.map((array, index) => (
-                    <p key={index}>{array.join(', ')}</p>  // Implicit return
+                    <p key={index}>{array.join(', ')}</p>
                 ))
             }
         </div>
