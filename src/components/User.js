@@ -1,4 +1,4 @@
-import UserName from './elements/Username/UserName';
+import UserName from './elements/Username/UserNameComponent';
 import Balance from './elements/Balance/Balance';
 import ListElement from './elements/List/List';
 import CreateTicket from './elements/CreateTicket/CreateTicket';
