@@ -9,7 +9,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-        <Router>
+        <Router basename='/lottokeeper'>
           <ContextProvider>
             <MainRoutes />
           </ContextProvider>
