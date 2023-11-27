@@ -35,6 +35,7 @@ export const ContextProvider = ({ children }) => {
     console.log('this is gamesData in the console:', gameData);
     console.log('this is ticketsData:', ticketsData);
     console.log('this is allticketsdata:', allTicketsData)
+    console.log('this is userData is console: ', userData)
 
     /* update data in local sotrage: */
     useEffect(() => {
