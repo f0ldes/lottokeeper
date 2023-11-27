@@ -1,6 +1,7 @@
 import axios from 'axios';
+import apiUrl from './apiConfig';
 
-const endpoint = 'http://localhost:3001/checkUser';
+const endpoint = `${apiUrl}checkUser`;
 const getUserData = ( isAdmin ) => {
     return axios.get(endpoint, { params: {isAdmin} });
 };

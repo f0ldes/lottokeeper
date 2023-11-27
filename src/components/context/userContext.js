@@ -32,8 +32,9 @@ export const ContextProvider = ({ children }) => {
 
     
     const {executeRequest:getGame, data:gameData } = useRequest(getGamaData);
-    console.log('this is ticketsData in the console:', ticketsData);
-    console.log('this is all tickets data in the console:', allTicketsData)
+    console.log('this is gamesData in the console:', gameData);
+    console.log('this is ticketsData:', ticketsData);
+    console.log('this is allticketsdata:', allTicketsData)
 
     /* update data in local sotrage: */
     useEffect(() => {
@@ -46,17 +47,17 @@ export const ContextProvider = ({ children }) => {
 
     /* fetching the user data on a high level, on start: */
     useEffect(() => {
-        getUser(isAdmin)
+        getUser(isAdmin) // using isAdmin as a flag in this case, to trigger the userData.
     }, [isAdmin]);
 
     /* fetching the game data, and creating the game instance: */
     useEffect(() => {
-        /* check the local storage for win data aka. handle the case when game is drawn
+        /* check the local storage for win data; handle the case when game is drawn
            but no new game is initialized yet */
         const savedWinData = localStorage.getItem('winData');
-        const isGameAlradyDrawn = savedWinData ? JSON.parse(savedWinData) : null; //<---- no need to check for current game data, and refressh the current game if we have a drawn game alrady. this way the current game data will only reset once the admin hit the reset button. 
+        const isGameAlradyDrawn = savedWinData ? JSON.parse(savedWinData) : null; 
         if (!isGameAlradyDrawn) {
-            getGame(); /* has to be check, becasue the getGame automatically creates a new game in the database. We don't want that until the admin doesnt start a new one. */
+            getGame();  //has to be check, becasue the getGame automatically creates a new game in the database. We don't want that until the admin doesnt start a new one.
         };
     }, []);
     
@@ -69,23 +70,23 @@ export const ContextProvider = ({ children }) => {
         };
     }, [gameData]);
 
-    /* triggered by the draw handler: (nem biztos h a legjobb ha a allTicketsData triggeleri) */
+    /* triggered by the draw: */
     useEffect(() => {
-        if (allTicketsData && currentGame && timeToDraw) { /* make sure necessary data is present */
+        if (allTicketsData && currentGame && timeToDraw) { 
             const draw = async () => {
                 try {
-                    const { winners, prizes, winningNumbers } = await currentGame.draw(allTicketsData); /* call the lotto draw method */
-                    let winningUserIds = await updateWinners(winners, prizes, currentGame.prize); /* update the winners data, distribute the prize */
+                    const { winners, prizes, winningNumbers } = await currentGame.draw(allTicketsData); //call the draw method from the lotto model
+                    let winningUserIds = await updateWinners(winners, prizes, currentGame.prize); //update the winners data, distribute the price
                     setWinData({
-                        /* has to update to save the userId: ticketId and not just the userId? */
                         winningUserIds: winningUserIds.data.data, 
                         winningNumbers: winningNumbers,
                         previousGameId: currentGame.gameId,
                         ticketsSold: currentGame.ticketsSold, 
                         prize: currentGame.prize,
                         prizes: prizes
-                    }); /* set the winData. It's also used for summary. */
-                    setTimeToDraw(false); /* extra chaeck for flagging the draw mechanism */
+                    }); //set all the necessary data about the drawn game.
+                    setTimeToDraw(false); //reset the draw flag
+                    await getUser(isAdmin) //update the admins balance 
                 } catch (error) {
                     console.error('this is the error:', error);
                 }
@@ -105,21 +106,22 @@ export const ContextProvider = ({ children }) => {
     };
 
     /* update admin and player balance handler  */
-    const handleUserBalance = async () => {
+    const handleUserBalance = async (isAdmin) => {
         UserBalanceHandler(userData, currentGame, isAdmin, getUser, updateGameData, updateUserBalance);
     };
 
     /* handle draw: */
     const handleDraw = async () => {
-        await getAllTicketsData(null, gameData.id);
-        setTimeToDraw(true)
+        await getAllTicketsData(null, gameData.id); //get all the ticket data for the necessary calculations
+        setTimeToDraw(true); //indicate the draw time flag, that its indeed time to draw
     };
 
     return (
         <Context.Provider value={{ 
             isAdmin, 
             setIsAdmin, 
-            userData, 
+            userData,
+            getUser, 
             updateUsername, 
             updateTicketList,
             getTickets,
@@ -128,6 +130,7 @@ export const ContextProvider = ({ children }) => {
             ticketsData, 
             handleUserBalance, 
             gameData,
+            getGame,
             handleDraw,
             winData,
             setWinData,

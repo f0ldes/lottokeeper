@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useMemo } from "react";
+import { useContext, useEffect, useState } from "react";
 import { List, ListItem , Box, Typography, Grid, Button, ButtonGroup } from '@mui/material';
 import { UpdateTicketListHandler } from "../../../utils/handlers/contextHandlers";
 import Context from "../../context/userContext";
@@ -13,7 +13,6 @@ const ListElement = () => {
     const [sortCriteria, setSortCriteria] = useState('created'); //separate state for filter input
     const { isAdmin,  userData, gameData, getTickets, allTicketsData, ticketsData, getAllTicketsData, allTicketFlag, winData } = useContext(Context);
 
-    console.log('this is win data:' ,winData);
 
     useEffect(() => {
         if (isAdmin && gameData) {
@@ -28,13 +27,13 @@ const ListElement = () => {
     displayData = Array.isArray(displayData) ? sortTicketsByReal([...displayData]) : displayData;
 
     if (!winData) {
-        localStorage.removeItem('enhancedDisplayData'); // clear the saved list.
+        localStorage.removeItem('enhancedDisplayData'); //clear the saved list.
     };
 
     if (winData) {
         const storedData = localStorage.getItem('lastDisplayedList'); //saving the last games list after draw to the local storage 
         if (storedData) {
-            displayData = JSON.parse(storedData); //until winData is avaiable, it tries to retrive 
+            displayData = JSON.parse(storedData); //until winData is avaiable, it tries to retrive the last saved ticket list
         } else {
             displayData = Array.isArray(displayData) ? findTheWinningNumbersForTheTicket(displayData, winData) : displayData;
             displayData = Array.isArray(displayData) ? sortTicketsByInput(displayData, sortCriteria) : displayData;

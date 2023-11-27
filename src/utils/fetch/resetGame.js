@@ -1,6 +1,7 @@
 import axios from "axios";
+import apiUrl from "./apiConfig";
 
-const endpoint = 'http://localhost:3001/resetGame';
+const endpoint = `${apiUrl}resetGame`;
 const resetGameData = (gameData) => {
     return axios.post(endpoint, { gameData });
 };

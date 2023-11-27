@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import { AnimatedCounter } from 'react-animated-counter';
 import Context from '../../context/userContext';

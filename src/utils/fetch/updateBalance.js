@@ -1,6 +1,7 @@
 import axios from "axios";
+import apiUrl from "./apiConfig";
 
-const endpoint = 'http://localhost:3001/updateBalance';
+const endpoint = `${apiUrl}updateBalance`;
 const updateUserBalance = (userData, amount) => {
     return axios.post(endpoint, {userData, amount});
 };

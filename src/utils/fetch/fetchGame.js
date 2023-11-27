@@ -1,6 +1,7 @@
 import axios from "axios";
+import apiUrl from "./apiConfig";
 
-const endpoint = 'http://localhost:3001/getGame';
+const endpoint = `${apiUrl}getGame`;
 const getGamaData = () => {
     return axios.post(endpoint);
 };
