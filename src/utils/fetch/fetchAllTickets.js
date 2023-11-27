@@ -1,6 +1,7 @@
 import axios from 'axios';
+import apiUrl from './apiConfig';
 
-const endpoint = 'http://localhost:3001/getAllTickets';
+const endpoint = `${apiUrl}getAllTickets`;
 const getAllTickets = ( gameId ) => {
     return axios.get(endpoint, { gameId });
 };

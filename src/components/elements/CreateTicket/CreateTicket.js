@@ -1,6 +1,7 @@
 import { Box, Button, TextField, Grid, Alert, Container } from "@mui/material";
 import { useContext, useState } from "react";
 import Context from "../../context/userContext";
+import { getUserData } from "../../../utils/fetch/fetchUser"
 import { saveTickets } from "../../../utils/fetch/saveTickets";
 import CreateFakeTickets from "./CreateFakeTickets/CraeteFakeTickets";
 import { updateGameData } from "../../../utils/fetch/updateGameData";
@@ -39,8 +40,6 @@ const CustomInputField = ({ onChange }) => {
         }
     };
     
-    
-    
     return (
         <Box sx={{ width: 'auto', maxWidth: '100%', margin: '0 auto', padding: 1, borderColor: 'default', border: 1}}>
             <Grid container spacing={1} justifyContent="center" alignItems="center">
@@ -67,7 +66,7 @@ const CustomInputField = ({ onChange }) => {
 };
 
 const CreateTicket = () => {
-    const { userData, updateTicketList, handleUserBalance, gameData, isAdmin, currentGame, winData, setAllTicketFlag } = useContext(Context);
+    const { userData, getUser, updateTicketList, handleUserBalance, gameData, isAdmin, currentGame, winData, setAllTicketFlag } = useContext(Context);
     /* array of numbers:  */
     const [numbersArray, setNumbersArray] = useState([]);
     const [counter, setCounter] = useState('');
@@ -85,6 +84,7 @@ const CreateTicket = () => {
             setAllTicketFlag(prevFlag => !prevFlag); //this flags the useEffect in the ticket list componenet to update.
             setNumbersArray('');
             setCounter('');
+            await getUser(isAdmin); //update the admin balance
         } else if (!isAdmin && gameData) {
             await saveTickets(userData, gameData.id, userNumbers);
             setSuccessMessage(true);

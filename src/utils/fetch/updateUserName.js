@@ -1,6 +1,7 @@
 import axios from "axios";
+import apiUrl from "./apiConfig";
 
-const endpoint = 'http://localhost:3001/updateUserName';
+const endpoint = `${apiUrl}updateUserName`;
 const updateName = ( newUserName ) => {
     return axios.post(endpoint, { newUserName }); //query or req ??????
 };
