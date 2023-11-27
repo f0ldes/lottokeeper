@@ -98,7 +98,7 @@ export const ContextProvider = ({ children }) => {
 
     /* update userName handler */
     const updateUsername = async (newName) => {
-        UpdateUserName(newName, updateName, getUser, isAdmin);
+        UpdateUserName(newName, updateName, getUser, isAdmin, userData);
     };
 
     /* update ticket list handler */

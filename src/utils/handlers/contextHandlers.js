@@ -28,9 +28,9 @@ const UpdateTicketListHandler = async (userData, gameData, getTickets) => {
     };
 };
 
-const UpdateUserName = async (newName, updateName, getUser, isAdmin) => {
+const UpdateUserName = async (newName, updateName, getUser, isAdmin, userData) => {
     try {
-        await updateName(newName);
+        await updateName(newName, userData);
         await getUser(isAdmin);
     } catch (error) {
         console.log(error.response?.data?.message);
