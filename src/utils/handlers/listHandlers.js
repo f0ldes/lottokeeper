@@ -65,8 +65,36 @@ const sortTicketsByInput = (tickets, criteria) => {
     });
 };
 
+/* Check if numbers are valid (its for ticket validation): */
+const areNumbersValid = (numbers) => {
+    if (!Array.isArray(numbers)) {
+        return false; // Not an array, therefore invalid
+    }
+    const filteredNumbers = numbers.filter(n => n !== '');
+    const uniqueNumbers = new Set(filteredNumbers);
+    return filteredNumbers.length === 5 && uniqueNumbers.size === 5;
+};
+
+/* calculate user prize: */
+const calculateUserPrize = (userId, winnerIds, prizes) => {
+    if (winnerIds.fiveHit.includes(userId)) {
+        return prizes.fiveHit;
+    } else if (winnerIds.fourHit.includes(userId)) {
+        return prizes.fourHit;
+    } else if (winnerIds.threeHit.includes(userId)) {
+        return prizes.threeHit;
+    } else if (winnerIds.twoHit.includes(userId)) {
+        return prizes.twoHit;
+    } else if (winnerIds.noHit.includes(userId)) {
+        return prizes.noHit;
+    }
+    return 0;
+};
+
 export {
     sortTicketsByReal,
     findTheWinningNumbersForTheTicket, 
-    sortTicketsByInput
+    sortTicketsByInput, 
+    areNumbersValid,
+    calculateUserPrize
 };

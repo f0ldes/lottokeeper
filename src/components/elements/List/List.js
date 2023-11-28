@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { List, ListItem , Box, Typography, Grid, Button, ButtonGroup } from '@mui/material';
+import { Box, ButtonGroup, Button, TableContainer, Table, TableBody, TableRow, TableCell, Paper } from '@mui/material';
 import { UpdateTicketListHandler } from "../../../utils/handlers/contextHandlers";
 import Context from "../../context/userContext";
-import { findTheWinningNumbersForTheTicket, sortTicketsByReal, sortTicketsByInput } from "../../../utils/handlers/listHandlers";
+import { findTheWinningNumbersForTheTicket, sortTicketsByReal, sortTicketsByInput, calculateUserPrize } from "../../../utils/handlers/listHandlers";
 
 const listStyle = {
     maxHeight: '200px',
@@ -43,33 +43,54 @@ const ListElement = () => {
         displayData = Array.isArray(displayData) ? sortTicketsByReal([...displayData]) : displayData;
     };
 
-
+    useEffect(() => {
+        function sortData() {
+            let sortedData;
+            if (Array.isArray(displayData)) {
+                console.log('displaydata', displayData)
+                sortedData = sortTicketsByInput([...displayData], sortCriteria);
+            }
+            return sortedData;
+        }
+    
+        if (winData) {
+            const sortedData = sortData();
+            localStorage.setItem('lastDisplayedList', JSON.stringify(sortedData));
+        } else {
+            sortData();
+        }
+    }, [sortCriteria, winData, displayData]);
 
     return (
-        <Box>
+        <Box sx={{ width: '100%' }}>
             {winData &&
                 <ButtonGroup>
-                    <Button onClick={() => setSortCriteria('created')}>Sort by Created</Button>
-                    <Button onClick={() => setSortCriteria('winningNumbers')}>Sort by Winning Numbers</Button>
+                    <Button onClick={() => setSortCriteria('winningNumbers')}>Sort by Created</Button>
+                    <Button onClick={() => setSortCriteria('created')}>Sort by Winning Numbers</Button>
                     <Button onClick={() => setSortCriteria('prize')}>Sort by Prize</Button>
                 </ButtonGroup>}
-            <Typography sx={{ padding: 1 }}>Tickets List:</Typography>
-            <List dense={true}>
-                {Array.isArray(displayData) && displayData.map((ticket, index) => (
-                    <ListItem key={ticket.id}>
-                        <Grid container justifyContent="space-between" alignItems="center">
-                            <Grid item>
-                                <Typography>{index + 1}. {JSON.parse(ticket.numbers).join(' ')}</Typography>
-                            </Grid>
-                            {winData && (
-                                <Grid item>
-                                    <Typography>Winning Numbers: {ticket.winningNumbersInTicket ? ticket.winningNumbersInTicket.join(', ') : 0 } Prize for the ticket: {ticket.prizeAmount}</Typography>
-                                </Grid>
-                            )}
-                        </Grid>
-                    </ListItem>
-                ))}
-            </List>
+            <TableContainer component={Paper} mt={2} sx={{ backgroundColor: 'transparent', width: '100%' }}>
+                <Table aria-label="simple table" size="large">
+                    <TableBody>
+                        {Array.isArray(displayData) && displayData.map((ticket, index) => (
+                            <TableRow key={ticket.id}>
+                                <TableCell component="th" scope="row" style={{ borderBottom: 'none' }}>
+                                    {index + 1}
+                                </TableCell>
+                                <TableCell style={{ borderBottom: 'none' }}>
+                                    {JSON.parse(ticket.numbers).join(' ')}
+                                </TableCell>
+                                {winData && (
+                                    <TableCell style={{ borderBottom: 'none' }} align="right">
+                                        Winning Numbers: {ticket.winningNumbersInTicket ? ticket.winningNumbersInTicket.length : 'None'}<br />
+                                        Prize for the ticket: {ticket.prizeAmount}
+                                    </TableCell>
+                                )}
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Box>
     )
 };

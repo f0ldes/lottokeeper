@@ -34,7 +34,7 @@ class Lotto {
     };
 
     calculatePrize() {
-        const prizePercentage = 0.60; //---> 0.40 az admine: .gm et atirni .comissionra -> azt returnolni -> hozza adni gm balanchoz. || de  igazabol le is lehet csak vonn
+        const prizePercentage = 0.60;
         this.prize = prizePercentage * this.ticketsSold * this.ticketPrice;
         return prizePercentage * this.ticketsSold * this.ticketPrice;
     };

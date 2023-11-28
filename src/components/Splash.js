@@ -1,17 +1,16 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import Context from "./context/userContext";
+import NotesElement from "./elements/Notes/Notes";
 
 
 const TextPanel = () => (
     <Typography variant="h1" align="center" gutterBottom>
-        Welcome to Lottokeeper!
-        {/* meg ide a johet az elozo nyeroszamok */}
+        Lottokeeper.
     </Typography>
 );
 
-//ezt ki lehet esetleg szervezni;
 const ButtonPanel = () => {
     const { setIsAdmin } = useContext(Context);
     const navigate = useNavigate();
@@ -28,17 +27,26 @@ const ButtonPanel = () => {
 
     return (
         <Box width='100%' display="flex" justifyContent="center" alignItems="center" gap={2}>
-            <Button onClick={handleUserRole} > Jatekos Vagyok </Button>
-            <Button onClick={handleAdminRole} > Uzemeleteto Vagyok </Button>
+            <Button onClick={handleUserRole} variant="contained" fullWidth > Jatekos Vagyok </Button>
+            <Button onClick={handleAdminRole} variant="contained" fullWidth > Uzemeleteto Vagyok </Button>
         </Box>
     )
 };
 
 const SplashPage = () => {
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" flexDirection="column" >
-            <TextPanel />
-            <ButtonPanel />
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" flexDirection="column" sx={{boxShadow: '0px 10px 20px #F6F4F1'}} >
+            <Grid container justifyItems="stretch" flexDirection='column' sx={{width: '500px', padding: 1, }}>
+                <Grid item sx={{paddingBottom: 3}}>
+                    <TextPanel />
+                </Grid>
+                <Grid item>
+                    <ButtonPanel />
+                </Grid>
+                <Grid item>
+                    <NotesElement />
+                </Grid>
+            </Grid>
         </Box>
     );
 };

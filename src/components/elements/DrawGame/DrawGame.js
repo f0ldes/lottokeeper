@@ -4,7 +4,7 @@ import { resetGameData } from '../../../utils/fetch/resetGame';
 import Context from '../../context/userContext';
 
 const DrawGameComponent = () => {
-    const { handleDraw, winData, setWinData, getGame,  updateTicketList, getAllTicketsData } = useContext(Context);
+    const { handleDraw, winData, setWinData, getGame } = useContext(Context);
 
     const handleReset = async () => {
         /* handle reset: trigger function to update the games db. */
@@ -19,8 +19,8 @@ const DrawGameComponent = () => {
     };
 
     return (
-        <Box>
-            <Button variant='outlined' fullWidth onClick={ winData ? handleReset : handleDraw}>
+        <Box sx={{padding: 1}}>
+            <Button variant='contained' fullWidth onClick={ winData ? handleReset : handleDraw}>
                 {winData ? 'New Game' : 'Draw Game'}
             </Button>
         </Box>
