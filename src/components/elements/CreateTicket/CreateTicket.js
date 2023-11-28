@@ -126,7 +126,7 @@ const CreateTicket = () => {
 
                             <Box sx={{padding: 1}}>
                                 <CreateFakeTickets counter={counter} setCounter={setCounter} numbersArray={numbersArray} setNumbersArray={setNumbersArray} />
-                                {numbersArray.length > 0 && <Button fullWidth onClick={playNumbers} variant="contained" > Megjatszom </Button>}
+                                {numbersArray.length > 0 && <Button fullWidth onClick={playNumbers} variant="contained" > Play Numbers </Button>}
                             </Box>
 
 

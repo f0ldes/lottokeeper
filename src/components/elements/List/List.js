@@ -80,6 +80,16 @@ const ListElement = () => {
                                 <TableCell style={{ borderBottom: 'none' }}>
                                     {JSON.parse(ticket.numbers).join(' ')}
                                 </TableCell>
+                                {isAdmin &&
+                                    <TableCell style={{ borderBottom: 'none' }}>
+                                        <span style={{
+                                            color: ticket.is_real === 0 ? 'yellow' : 'green',
+                                            textShadow: ticket.is_real === 0 ? '0 0 8px yellow' : '0 0 8px green'
+                                        }}>
+                                            {ticket.is_real === 0 ? 'Fake' : 'Real'}
+                                        </span>
+                                    </TableCell>
+                                }
                                 {winData && (
                                     <TableCell style={{ borderBottom: 'none' }} align="right">
                                         Winning Numbers: {ticket.winningNumbersInTicket ? ticket.winningNumbersInTicket.length : 'None'}<br />

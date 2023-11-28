@@ -31,19 +31,19 @@ const SummaryElement = () => {
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row" style={{ borderBottom: 'none' }} > Five Hit Tickets: </TableCell>
-                                <TableCell align="right" style={{ borderBottom: 'none' }}>{winningUserIds.fiveHit.length}</TableCell>
+                                <TableCell align="right" style={{ borderBottom: 'none' }}>{winningUserIds.fiveHit.length}  /  Payout: {prizes.fiveHit.toFixed(2)} /</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row" style={{ borderBottom: 'none' }}> Four Hit Tickets: </TableCell>
-                                <TableCell align="right" style={{ borderBottom: 'none' }}>{winningUserIds.fourHit.length}</TableCell>
+                                <TableCell align="right" style={{ borderBottom: 'none' }}>{winningUserIds.fourHit.length} / Payout: {prizes.fourHit.toFixed(2)} /</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row" style={{ borderBottom: 'none' }}> Three Hit Tickets: </TableCell>
-                                <TableCell align="right" style={{ borderBottom: 'none' }}>{winningUserIds.threeHit.length}</TableCell>
+                                <TableCell align="right" style={{ borderBottom: 'none' }}>{winningUserIds.threeHit.length} / Payout: {prizes.threeHit.toFixed(2)} /</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row" style={{ borderBottom: 'none' }}> Two Hit Tickets:</TableCell>
-                                <TableCell align="right" style={{ borderBottom: 'none' }}>{winningUserIds.twoHit.length} </TableCell>
+                                <TableCell align="right" style={{ borderBottom: 'none' }}>{winningUserIds.twoHit.length} / Payout: {prizes.twoHit.toFixed(2)} /</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row" style={{ borderBottom: 'none' }}> Zero Hit Tickets:</TableCell>
@@ -52,7 +52,7 @@ const SummaryElement = () => {
 
                             <TableRow>
                                 <TableCell component="th" scope="row" style={{ borderBottom: 'none' }}>Total Prize Payout: </TableCell>
-                                <TableCell align="right" style={{ borderBottom: 'none' }}> {totalPrizePayout} </TableCell>
+                                <TableCell align="right" style={{ borderBottom: 'none' }}> {totalPrizePayout.toFixed(2)} </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row" style={{ borderBottom: 'none' }}>Total Tickets Sold: </TableCell>
@@ -66,7 +66,7 @@ const SummaryElement = () => {
                                     </TableRow>
                                     <TableRow>
                                         <TableCell component="th" scope="row" style={{ borderBottom: 'none' }}> <strong> Operator's total Profit: </strong></TableCell>
-                                        <TableCell align="right" style={{ borderBottom: 'none' }}> <strong> {operatorProfit} </strong>  </TableCell>
+                                        <TableCell align="right" style={{ borderBottom: 'none' }}> <strong> {operatorProfit.toFixed(2)} </strong>  </TableCell>
                                     </TableRow>
                                 </>
                             }

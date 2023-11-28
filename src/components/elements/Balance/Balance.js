@@ -16,7 +16,7 @@ const Balance = () => {
             alignItems="center" 
             sx={{ borderColor: 'default', padding: 2 }}
         >
-        <Grid container justifyContent="space-between" alignItems="center" spacing={2}> {/* Add spacing between items */}
+        <Grid container justifyContent="space-between" alignItems="center" spacing={2}> 
             <Grid item>
                 <Typography variant="h5"> Your available balance: </Typography>
             </Grid>

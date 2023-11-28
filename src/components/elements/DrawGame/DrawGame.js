@@ -10,6 +10,7 @@ const DrawGameComponent = () => {
         /* handle reset: trigger function to update the games db. */
         if (winData && winData.previousGameId) {
             await resetGameData(winData.previousGameId); //reset the win data in ls.
+            localStorage.removeItem('lastDisplayedList'); //clear the local storage, if we have a new game.
             setWinData(null); //reset the win Data in ls.
             await getGame(); //reset also the gamedata.
 

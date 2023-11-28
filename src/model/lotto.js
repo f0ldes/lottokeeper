@@ -82,7 +82,7 @@ class Lotto {
             ticketMap[ticketData[i].id] = ticketNumbers.sort((a, b) => a - b)
         };
 
-        /* the winners map, strong the ticket id of the winner tickets: */
+        /* the winners map, storing the ticket id of the winner tickets: */
         let winners = {
             fiveHit: [],
             fourHit: [],
