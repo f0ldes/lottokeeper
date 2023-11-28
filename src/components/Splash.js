@@ -41,12 +41,12 @@ const ButtonPanel = () => {
 
 const SplashPage = () => {
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" flexDirection="column" sx={{boxShadow: '0px 10px 20px #F6F4F1'}} >
-            <Grid container justifyItems="stretch" flexDirection='column' sx={{width: '500px', padding: 1 }}>
-                <Grid item sx={{paddingBottom: 3}}>
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" flexDirection="column" >
+            <Grid container justifyItems="stretch" flexDirection='column' sx={{width: '500px', padding: 1}} xs={9}>
+                <Grid item  sx={{paddingBottom: 3}}>
                     <TextPanel />
                 </Grid>
-                <Grid item>
+                <Grid item  >
                     <ButtonPanel />
                 </Grid>
                 <Grid item>
