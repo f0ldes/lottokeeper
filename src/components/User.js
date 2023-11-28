@@ -24,21 +24,25 @@ const UserPanel = () => {
     const { isAdmin, winData } = useContext(Context)
     return (
         <Box display="flex" justifyContent="center" alignItems="center" minHeight='100vh' flexDirection='column' >
-            <Grid container justifyContent="center" alignItems="center" flexDirection="column" >
-                {winData && <SummaryElement />}
-                <Grid item sx={{ border: 1, borderColor: 'default', width: '500px', minHeight: '300px' }}>
+            <Grid container justifyContent="center" alignItems="flex-start" >
+                <Grid item sx={{ width: '500px', minHeight: '300px' }}>
                     <InfoPanel />
                     {isAdmin &&
                         <Box sx={{ padding: 1 }}>
                             <DrawGameComponent />
                         </Box>
                     }
-                    <Box sx={{ padding: 1 }}>
-                        <Button fullWidth component={Link} to='/' variant='outlined'>Vissza</Button>
+                    <Box sx={{ padding: 2 }}>
+                        <Button fullWidth component={Link} to='/' variant="contained" > Back </Button>
                     </Box>
                 </Grid>
-                <Grid item sx={{ border: 1, borderColor: 'default', width: '500px' }}>
+                <Grid item sx={{ width: '500px', minHeight: '300px' }}>
                     <ListElement />
+                </Grid>
+            </Grid>
+            <Grid container justifyContent="center">
+                <Grid item sx={{width: '1000px'}}>
+                    {winData && <SummaryElement />}
                 </Grid>
             </Grid>
         </Box>

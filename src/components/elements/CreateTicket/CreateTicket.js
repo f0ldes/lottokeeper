@@ -1,15 +1,21 @@
 import { Box, Button, TextField, Grid, Alert, Container } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import Context from "../../context/userContext";
-import { getUserData } from "../../../utils/fetch/fetchUser"
 import { saveTickets } from "../../../utils/fetch/saveTickets";
 import CreateFakeTickets from "./CreateFakeTickets/CraeteFakeTickets";
 import { updateGameData } from "../../../utils/fetch/updateGameData";
+import { areNumbersValid } from "../../../utils/handlers/listHandlers";
 
 /* Custom component to receive the correct number inputs: */
-const CustomInputField = ({ onChange }) => {
+const CustomInputField = ({ onChange, setSuccessMessage, clearFields }) => {
     const [numbers, setNumbers] = useState(new Array(5).fill(''));
     const [showAlert, setShowAlert] = useState(false);
+
+    useEffect(() => {
+        if (clearFields) {
+            setNumbers(new Array(5).fill(''));
+        }
+    }, [clearFields]);
 
     const handleBlur = (index) => (event) => {
         /* checks the input value if it's within the correct range, upon moving from the input field: */
@@ -26,8 +32,12 @@ const CustomInputField = ({ onChange }) => {
         }
         setNumbers(newNumbers);
         onChange(newNumbers);
+
     };
     
+    const HandleOnHover = () => {
+        setSuccessMessage(false);
+    }
 
     const handleChange = (index) => (event) => {
         let newNumbers = [...numbers];
@@ -45,7 +55,9 @@ const CustomInputField = ({ onChange }) => {
             <Grid container spacing={1} justifyContent="center" alignItems="center">
                 {numbers.map((num, index) => (
                     <Grid item key={index} sx={{ width: 'fit-content'}}>
-                        <TextField 
+                        <TextField
+                            value={num}
+                            onMouseEnter={HandleOnHover}
                             onChange={handleChange(index)}
                             onBlur={handleBlur(index)}
                             inputProps={{ maxLength: 2 }} 
@@ -73,6 +85,10 @@ const CreateTicket = () => {
     /* containing single winning numbers: */
     const [userNumbers, setUserNumbers] = useState('');
     const [successMessage, setSuccessMessage] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [clearFields, setClearFields] = useState(0); // To trigger when to clear th input fields. 
+
+
 
     const playNumbers = async () => {
         if (isAdmin && gameData) {
@@ -86,24 +102,33 @@ const CreateTicket = () => {
             setCounter('');
             await getUser(isAdmin); //update the admin balance
         } else if (!isAdmin && gameData) {
-            await saveTickets(userData, gameData.id, userNumbers);
-            setSuccessMessage(true);
-            setUserNumbers(''); // Clear the input field
-            updateTicketList();
-            handleUserBalance();
+            if (areNumbersValid(userNumbers) && userData.balance > 0) { //check for user balance
+                await saveTickets(userData, gameData.id, userNumbers);
+                setSuccessMessage(true);
+                setUserNumbers(''); // Clear the input field
+                setClearFields(prev => prev + 1); //clear the filed in the custom componenet. (not counting anything)
+                updateTicketList();
+                handleUserBalance();
+                setAlertMessage('');
+            } else {
+                setSuccessMessage(false)
+                setAlertMessage( userData?.balance <= 0 ? 'Insufficient Balance' : 'Check your numbers! Min. 5 and unique!')
+            }
         }
     };
 
     return (
-        <Box flexDirection='column' sx={{ borderColor: 'default', padding: 1 }}>
+        <Box flexDirection='column' sx={{ padding: 1 }}>
             {
                 isAdmin ?
                     <>
                         {!winData &&
-                            <>
+
+                            <Box sx={{padding: 1}}>
                                 <CreateFakeTickets counter={counter} setCounter={setCounter} numbersArray={numbersArray} setNumbersArray={setNumbersArray} />
-                                {numbersArray.length > 0 && <Button fullWidth onClick={playNumbers} variant="outlined" > Megjatszom </Button>}
-                            </>
+                                {numbersArray.length > 0 && <Button fullWidth onClick={playNumbers} variant="contained" > Megjatszom </Button>}
+                            </Box>
+
 
                         }
                     </>
@@ -111,15 +136,18 @@ const CreateTicket = () => {
                     <>
                         {!winData &&
                             <Container sx={{ padding: 1 }}>
-                                <CustomInputField onChange={(newNumbers) => setUserNumbers(newNumbers)} />
+                                <CustomInputField onChange={(newNumbers) => setUserNumbers(newNumbers)} setSuccessMessage={setSuccessMessage} clearFields={clearFields} />
                             </Container>
                         }
-                        {userNumbers && successMessage &&
-                            <Container sx={{ padding: 1 }}>
-                                <Alert severity='success'> {`${userNumbers} are registered for the game!`} </Alert>
-                            </Container>
-                        }
-                        {!winData && <Button fullWidth onClick={playNumbers} variant='outlined'> Megjatszom </Button>}
+                        <Grid container flexDirection="column">
+                            <Grid item sx={{ padding: 1 }}>
+                                {alertMessage !== '' && <Alert severity="error"> {`${alertMessage}`} </Alert>}
+                                {successMessage && <Alert severity='success'> {`Numbers are registered for the game!`} </Alert>}
+                            </Grid>
+                            <Grid item sx={{ padding: 1 }}>
+                                {!winData && <Button fullWidth onClick={playNumbers} variant="contained"> Megjatszom </Button>}
+                            </Grid>
+                        </Grid>
                     </>
             }
         </Box>

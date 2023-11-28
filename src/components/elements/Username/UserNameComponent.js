@@ -17,8 +17,8 @@ const UserName = () => {
     /* Conditionally render the username / welcome message for admin: */
     if (isAdmin) {
         return (
-            <Box sx={{ borderColor: 'default', padding: 1 }} flexDirection="column" display='flex' justifyContent='center' alignItems='center'>
-                <Typography> Udvozlunk, Uzemeleteto! </Typography>
+            <Box sx={{ width: '100%', textAlign: 'left' }}> 
+                <Typography varian="h6"> Welcome, Operator! </Typography>
             </Box>
         );
     }
@@ -26,25 +26,27 @@ const UserName = () => {
     /* The default name of all non admin type users is 'unknown' */
     if (!isAdmin && userData?.name && userData?.name !== 'unknown') {
         return (
-            <Box sx={{ borderColor: 'default', padding: 1 }} flexDirection="column" display='flex' justifyContent='center' alignItems='center'>
-                <Typography>Hey, {userData.name}!</Typography>
+            <Box sx={{ borderColor: 'default', padding: 2 }}  flexDirection="column" display='flex' justifyContent='center' alignItems='flex-start'>
+                <Typography variant="h5" >Hey, {userData.name}!</Typography>
             </Box>
         );
     }
 
     return (
-        <Box sx={{ borderColor: 'default', padding: 1 }} flexDirection="column" display='flex' justifyContent='center' alignItems='center'>
-            <Typography> Welcome Player! </Typography>
+        <Box sx={{ borderColor: 'default', padding: 2 }} flexDirection="column" display='flex' justifyContent='space-between' alignItems='center'>
+            <Box sx={{ width: '100%', textAlign: 'left' }}> 
+                <Typography varian="h6"> Welcome Player! </Typography>
+            </Box>
 
-                <TextField
-                    fullWidth
-                    variant='standard'
-                    label=""
-                    placeholder="Enter your new username here."
-                    value={username}
-                    onChange={handleUsernameChange}
-                    sx={{ marginBottom: 1 }}
-                />
+            <TextField
+                fullWidth
+                variant='standard'
+                label=""
+                placeholder="Enter your new username here."
+                value={username}
+                onChange={handleUsernameChange}
+                sx={{ marginBottom: 1 }}
+            />
             <Button fullWidth onClick={registerNewName} variant="outlined">Register Username </Button>
         </Box>
     );

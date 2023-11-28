@@ -16,26 +16,18 @@ export const ContextProvider = ({ children }) => {
     const [isAdmin, setIsAdmin] = useState(() => {
         const savedIsAdmin = localStorage.getItem("isAdmin");
         return savedIsAdmin !== null ? JSON.parse(savedIsAdmin) : false;
-    }); // ezeket egy sorrossa 
+    }); 
     const [winData, setWinData] = useState(() => {
         const savedWinData = localStorage.getItem("winData");
         return savedWinData !== null ? JSON.parse(savedWinData) : null;
-    }); // ezeket egysorossa
+    }); 
     const [currentGame, setCurrentGame] = useState(null);
     const {executeRequest:getUser, data:userData } = useRequest(getUserData);
     const {executeRequest:getTickets, data:ticketsData } = useRequest(getTicketsData);
-
-    /* this is only a state for tracking when a draw should happen.  */
-    const [timeToDraw, setTimeToDraw] = useState(false);
+    const [timeToDraw, setTimeToDraw] = useState(false); //flag to draw the game
     const [allTicketFlag, setAllTicketFlag] = useState(null); /* this should indicate when we should fetch the data in the list component. */
-    const {executeRequest:getAllTicketsData, data:allTicketsData} = useRequest(getTicketsData); // maybe this should be done differently.
-
-    
+    const {executeRequest:getAllTicketsData, data:allTicketsData} = useRequest(getTicketsData);
     const {executeRequest:getGame, data:gameData } = useRequest(getGamaData);
-    console.log('this is gamesData in the console:', gameData);
-    console.log('this is ticketsData:', ticketsData);
-    console.log('this is allticketsdata:', allTicketsData)
-    console.log('this is userData is console: ', userData)
 
     /* update data in local sotrage: */
     useEffect(() => {
