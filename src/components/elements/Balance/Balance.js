@@ -5,6 +5,7 @@ import Context from '../../context/userContext';
 
 const Balance = () => {
     const { userData } = useContext(Context);
+    console.log(userData)
     const balance = userData ? userData.balance : 0;
 
 

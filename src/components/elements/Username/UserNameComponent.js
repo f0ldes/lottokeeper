@@ -17,8 +17,8 @@ const UserName = () => {
     /* Conditionally render the username / welcome message for admin: */
     if (isAdmin) {
         return (
-            <Box sx={{ width: '100%', textAlign: 'left' }}> 
-                <Typography varian="h6"> Welcome, Operator! </Typography>
+            <Box sx={{ width: '100%', textAlign: 'left', padding: 2}}> 
+                <Typography varian="h5"> Welcome,  Operator! </Typography>
             </Box>
         );
     }

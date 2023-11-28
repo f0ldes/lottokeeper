@@ -27,10 +27,10 @@ const NotesElement = () => {
                 <Typography variant='subtitle2' > <strong> 2. Autentikáció: </strong> </Typography>
                 <Typography variant='body2'> 
                     A feladat könnyebbségét jelentette, hogy teljes körű autentikációt nem kellet kiépíteni, viszont az szükséges volt, hogy
-                    az egyes userek külön-külön beazonosíthatóak legyenek. Végül  (részben a szerver használat okán) az egyes userek azonosítására cookikba mentett
-                    egyei azonosítokat használtam. Mivel a feladatban nem volt leírva, hogy az Üzemeletetők is választhatnak nevet, az üzemeletető oldal egységes. 
+                    az egyes userek külön-külön beazonosíthatóak legyenek. Végül  (részben a szerver használat okán) az egyes userek azonosítására egy local sotrage + cookie
+                    megoldás mellet döntöttem (főleg ls). 
+                    Mivel a feladatban nem volt leírva, hogy az Üzemeletetők is választhatnak nevet, az üzemeletető oldal egységes. 
                     Ugyanakkor az Üzemeltetők egyedileg is azonosításra kerülnek, így később ha az alkalmazás további fejlesztésre kerül, lehetőség van ennek kihasználására. 
-
                     Ahogy említettem az Üzemeltetői oldal egységes: minden ujaonnan regisztrált üzemeltető, "megörökli" az előző pramatéreiet (pl.: egyenleg).
                 </Typography>
                 <Typography variant='subtitle2' > <strong> 3. Játék ciklus: </strong> </Typography>
@@ -48,7 +48,8 @@ const NotesElement = () => {
                 </Typography>
                 <Typography variant='subtitle2' > <strong> 5. Játék logika: </strong> </Typography>
                 <Typography variant='body2'> 
-                    60% / 40% -ban oszilk meg a profit az üzemeltető és a játékos között. A 60% tovább osztásra kerül a nyertes szelvények között. 
+                    60% / 40% -ban oszilk meg a profit az üzemeltető és a játékos között. A 60% tovább osztásra kerül a nyertes szelvények között. Külön "modelt" is készítettem a játékohoz, így 
+                    maga a "játék logika" is könnyen alakítható.
                 </Typography>
                 <Typography variant='subtitle2' > <strong> Összefoglalás: </strong> </Typography>
                 <Typography variant='body2'> 
