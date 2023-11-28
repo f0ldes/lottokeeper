@@ -26,9 +26,15 @@ const ButtonPanel = () => {
     };
 
     return (
-        <Box width='100%' display="flex" justifyContent="center" alignItems="center" gap={2}>
-            <Button onClick={handleUserRole} variant="contained" fullWidth > Jatekos Vagyok </Button>
-            <Button onClick={handleAdminRole} variant="contained" fullWidth > Uzemeleteto Vagyok </Button>
+        <Box width='100%' display="flex" justifyContent="center" alignItems="center" sx={{padding: 1}}>
+            <Grid container spacing={2} justify="center" alignItems="center">
+                <Grid item xs={12} sm={6}>
+                    <Button onClick={handleUserRole} variant="contained" fullWidth> Jatekos Vagyok </Button>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <Button onClick={handleAdminRole} variant="contained" fullWidth> Uzemeleteto Vagyok </Button>
+                </Grid>
+            </Grid>
         </Box>
     )
 };
@@ -36,7 +42,7 @@ const ButtonPanel = () => {
 const SplashPage = () => {
     return (
         <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" flexDirection="column" sx={{boxShadow: '0px 10px 20px #F6F4F1'}} >
-            <Grid container justifyItems="stretch" flexDirection='column' sx={{width: '500px', padding: 1, }}>
+            <Grid container justifyItems="stretch" flexDirection='column' sx={{width: '500px', padding: 1 }}>
                 <Grid item sx={{paddingBottom: 3}}>
                     <TextPanel />
                 </Grid>

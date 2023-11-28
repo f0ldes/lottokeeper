@@ -6,7 +6,7 @@ import Context from './context/userContext';
 import SummaryElement from './elements/Summary/Summary';
 import DrawGameComponent from './elements/DrawGame/DrawGame';
 import { Link } from 'react-router-dom';
-import { Box, Grid, Button } from '@mui/material';
+import { Box, Grid, Button, Typography } from '@mui/material';
 import { useContext } from 'react';
 
 const InfoPanel = () => {
@@ -37,6 +37,7 @@ const UserPanel = () => {
                     </Box>
                 </Grid>
                 <Grid item sx={{ width: '500px', minHeight: '300px' }}>
+                    {!winData && <Typography variant='h4'> Tickets List: </Typography>}
                     <ListElement />
                 </Grid>
             </Grid>
