@@ -28,6 +28,7 @@ export const ContextProvider = ({ children }) => {
     const [allTicketFlag, setAllTicketFlag] = useState(null); /* this should indicate when we should fetch the data in the list component. */
     const {executeRequest:getAllTicketsData, data:allTicketsData} = useRequest(getTicketsData);
     const {executeRequest:getGame, data:gameData } = useRequest(getGamaData);
+    console.log('this is the context:', userData)
 
     /* update data in local sotrage: */
     useEffect(() => {
