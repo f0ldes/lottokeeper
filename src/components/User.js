@@ -37,7 +37,9 @@ const UserPanel = () => {
                     </Box>
                 </Grid>
                 <Grid item sx={{ width: '500px', minHeight: '300px' }}>
-                    {!winData && <Typography variant='h4'> Tickets List: </Typography>}
+                    <box sx={{ ml: 2}}>
+                        {!winData && <Typography variant='h5'> Tickets List: </Typography>}
+                    </box>
                     <ListElement />
                 </Grid>
             </Grid>
