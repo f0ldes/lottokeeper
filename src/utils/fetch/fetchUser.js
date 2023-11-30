@@ -7,8 +7,6 @@ const getUserData = async (isAdmin) => {
 
     const handleResponse = (response) => {
         const { uniqueId, ...userData } = response.data;
-        console.log('this is the uniqueId:', uniqueId);
-        console.log('this is the userData:', userData);
         return { data: userData }; // Return only the userData, as its expected
     };
 

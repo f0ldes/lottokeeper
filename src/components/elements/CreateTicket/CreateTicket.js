@@ -78,7 +78,7 @@ const CustomInputField = ({ onChange, setSuccessMessage, clearFields }) => {
 };
 
 const CreateTicket = () => {
-    const { userData, getUser, updateTicketList, handleUserBalance, gameData, isAdmin, currentGame, winData, setAllTicketFlag } = useContext(Context);
+    const { userData, getUser, updateTicketList, handleUserBalance, gameData, isAdmin, currentGame, winData, setAllTicketFlag, setResetFlag } = useContext(Context);
     /* array of numbers:  */
     const [numbersArray, setNumbersArray] = useState([]);
     const [counter, setCounter] = useState('');
@@ -101,6 +101,7 @@ const CreateTicket = () => {
             setNumbersArray('');
             setCounter('');
             await getUser(isAdmin); //update the admin balance
+            setResetFlag(false)
         } else if (!isAdmin && gameData) {
             if (areNumbersValid(userNumbers) && userData.balance > 0) { //check for user balance
                 await saveTickets(userData, gameData.id, userNumbers);
@@ -110,6 +111,7 @@ const CreateTicket = () => {
                 updateTicketList();
                 handleUserBalance();
                 setAlertMessage('');
+                setResetFlag(false)
             } else {
                 setSuccessMessage(false)
                 setAlertMessage( userData?.balance <= 0 ? 'Insufficient Balance' : 'Check your numbers! Min. 5 and unique!')

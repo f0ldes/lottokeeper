@@ -25,10 +25,10 @@ export const ContextProvider = ({ children }) => {
     const {executeRequest:getUser, data:userData } = useRequest(getUserData);
     const {executeRequest:getTickets, data:ticketsData } = useRequest(getTicketsData);
     const [timeToDraw, setTimeToDraw] = useState(false); //flag to draw the game
+    const [resetFlag, setResetFlag] = useState(false) //reset flag to update ticketlist;
     const [allTicketFlag, setAllTicketFlag] = useState(null); /* this should indicate when we should fetch the data in the list component. */
     const {executeRequest:getAllTicketsData, data:allTicketsData} = useRequest(getTicketsData);
-    const {executeRequest:getGame, data:gameData } = useRequest(getGamaData);
-    console.log('this is the context:', userData)
+    const {executeRequest:getGame, loading:gameLoading, data:gameData } = useRequest(getGamaData);
 
     /* update data in local sotrage: */
     useEffect(() => {
@@ -106,8 +106,11 @@ export const ContextProvider = ({ children }) => {
 
     /* handle draw: */
     const handleDraw = async () => {
-        await getAllTicketsData(null, gameData.id); //get all the ticket data for the necessary calculations
-        setTimeToDraw(true); //indicate the draw time flag, that its indeed time to draw
+        await getAllTicketsData(null, gameData.id);
+        if ( allTicketsData.length > 0) {
+            setTimeToDraw(true); 
+        } //get all the ticket data for the necessary calculations
+ //indicate the draw time flag, that its indeed time to draw
     };
 
     return (
@@ -129,8 +132,11 @@ export const ContextProvider = ({ children }) => {
             winData,
             setWinData,
             currentGame,
+            gameLoading,
             allTicketFlag,
-            setAllTicketFlag
+            setAllTicketFlag,
+            resetFlag, 
+            setResetFlag
         }}>
             {children}
         </Context.Provider>
