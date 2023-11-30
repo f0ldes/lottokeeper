@@ -4,7 +4,7 @@ import { resetGameData } from '../../../utils/fetch/resetGame';
 import Context from '../../context/userContext';
 
 const DrawGameComponent = () => {
-    const { handleDraw, winData, setWinData, getGame } = useContext(Context);
+    const { handleDraw, winData, setWinData, getGame, setResetFlag } = useContext(Context);
 
     const handleReset = async () => {
         /* handle reset: trigger function to update the games db. */
@@ -12,8 +12,8 @@ const DrawGameComponent = () => {
             await resetGameData(winData.previousGameId); //reset the win data in ls.
             localStorage.removeItem('lastDisplayedList'); //clear the local storage, if we have a new game.
             setWinData(null); //reset the win Data in ls.
+            setResetFlag(true)
             await getGame(); //reset also the gamedata.
-
         } else {
             console.log('No winData avaiable, or the game is still actve.')
         }

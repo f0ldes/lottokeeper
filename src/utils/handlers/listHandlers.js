@@ -65,6 +65,40 @@ const sortTicketsByInput = (tickets, criteria) => {
     });
 };
 
+const sortData = (data, sortCriteria, order) => {
+    if (!Array.isArray(data)) return data;
+
+    return data.sort((a, b) => {
+        let valueA, valueB;
+
+        switch (sortCriteria) {
+            case 'winningNumbers':
+                valueA = a.winningNumbersInTicket ? a.winningNumbersInTicket.length : 0;
+                valueB = b.winningNumbersInTicket ? b.winningNumbersInTicket.length : 0;
+                break;
+            case 'Real?':
+                valueA = a.is_real ? 1 : 0;
+                valueB = b.is_real ? 1 : 0;
+                break;
+            case '#':
+                valueA = a.id
+                valueB = b.id
+                break;
+            // Add cases for other sorting criteria here
+            default:
+                return 0;
+        }
+
+        if (valueA < valueB) {
+            return order === 'asc' ? -1 : 1;
+        }
+        if (valueA > valueB) {
+            return order === 'asc' ? 1 : -1;
+        }
+        return 0;
+    });
+};
+
 /* Check if numbers are valid (its for ticket validation): */
 const areNumbersValid = (numbers) => {
     if (!Array.isArray(numbers)) {
@@ -91,10 +125,14 @@ const calculateUserPrize = (userId, winnerIds, prizes) => {
     return 0;
 };
 
+
 export {
     sortTicketsByReal,
     findTheWinningNumbersForTheTicket, 
     sortTicketsByInput, 
     areNumbersValid,
-    calculateUserPrize
+    calculateUserPrize, 
+    sortData
 };
+
+

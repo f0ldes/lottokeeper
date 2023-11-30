@@ -9,7 +9,6 @@ const useRequest = (requestFunction) => {
         setLoading(true);
         try {
             const response = await requestFunction(...args);
-            console.log('this is ther esponse in the custom:', response, 'and this is response.data:', response.data);
             setData(response.data)
             return response.data;
         } catch(err) {

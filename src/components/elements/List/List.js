@@ -1,87 +1,111 @@
 import { useContext, useEffect, useState } from "react";
-import { Box, ButtonGroup, Button, TableContainer, Table, TableBody, TableRow, TableCell, Paper } from '@mui/material';
+import { Box, TableContainer, Table, TableBody, TableRow, TableCell, TableHead, TableSortLabel } from '@mui/material';
 import { UpdateTicketListHandler } from "../../../utils/handlers/contextHandlers";
 import Context from "../../context/userContext";
-import { findTheWinningNumbersForTheTicket, sortTicketsByReal, sortTicketsByInput, calculateUserPrize } from "../../../utils/handlers/listHandlers";
+import { findTheWinningNumbersForTheTicket, sortData,  sortTicketsByReal} from "../../../utils/handlers/listHandlers";
 
-const listStyle = {
-    maxHeight: '200px',
-    overflow: 'auto'
-};
+
+const columns = [
+    { id: '#', label: '#' },
+    { id: 'numbers', label: 'Numbers' },
+    { id: 'Real?', label: 'Real?', isForAdmin: true },
+    { id: 'winningNumbers', label: 'Winning Numbers', isForWinData: true },
+    { id: 'prizeAmount', label: 'Prize Amount', isForWinData: true },
+];
 
 const ListElement = () => {
     const [sortCriteria, setSortCriteria] = useState('created'); //separate state for filter input
-    const { isAdmin,  userData, gameData, getTickets, allTicketsData, ticketsData, getAllTicketsData, allTicketFlag, winData } = useContext(Context);
-
+    const [order, setOrder] = useState('asc');
+    const [displayData, setDisplayData] = useState([]);    
+    const { isAdmin,  userData, gameData, getTickets, allTicketsData, ticketsData, getAllTicketsData, allTicketFlag, winData, gameLoading, resetFlag, setResetFlag } = useContext(Context);
 
     useEffect(() => {
-        if (isAdmin && gameData) {
-            getAllTicketsData(null, gameData.id)
-        } else if (userData && gameData) {
-            UpdateTicketListHandler(userData, gameData, getTickets);
+        if (!gameLoading && gameData) {
+            if (isAdmin) {
+                getAllTicketsData(null, gameData.id);
+            } else if (userData) {
+                UpdateTicketListHandler(userData, gameData, getTickets);
+            }
         } /* this triggers the update of the ticket list. allTickets used to track
             the fake ticket creation, in its element. */
     }, [userData, gameData, allTicketFlag])
 
-    let displayData = isAdmin ? allTicketsData : ticketsData;
-    displayData = Array.isArray(displayData) ? sortTicketsByReal([...displayData]) : displayData;
-
-    if (!winData) {
-        localStorage.removeItem('enhancedDisplayData'); //clear the saved list.
-    };
-
-    if (winData) {
-        const storedData = localStorage.getItem('lastDisplayedList'); //saving the last games list after draw to the local storage 
-        if (storedData) {
-            displayData = JSON.parse(storedData); //until winData is avaiable, it tries to retrive the last saved ticket list
-        } else {
-            displayData = Array.isArray(displayData) ? findTheWinningNumbersForTheTicket(displayData, winData) : displayData;
-            displayData = Array.isArray(displayData) ? sortTicketsByInput(displayData, sortCriteria) : displayData;
-            localStorage.setItem('lastDisplayedList', JSON.stringify(displayData));
-        }
-    } else {
-        displayData = Array.isArray(displayData) ? sortTicketsByReal([...displayData]) : displayData;
-    };
 
     useEffect(() => {
-        function sortData() {
-            let sortedData;
-            if (Array.isArray(displayData)) {
-                console.log('displaydata', displayData)
-                sortedData = sortTicketsByInput([...displayData], sortCriteria);
+        let dataToSort;
+    
+        if (!winData) {
+            localStorage.removeItem('enhancedDisplayData');
+            if (isAdmin && Array.isArray(allTicketsData)) {
+                console.log("here2:" , allTicketsData)
+                dataToSort = sortTicketsByReal(allTicketsData);
+            } else if (Array.isArray(ticketsData)) {
+                dataToSort = ticketsData;
             }
-            return sortedData;
+        } else {
+            const storedData = localStorage.getItem('lastDisplayedList');
+            if (storedData) {
+                dataToSort = JSON.parse(storedData);
+            } else {
+                dataToSort = isAdmin ? allTicketsData : ticketsData;
+                if (Array.isArray(dataToSort)) {
+                    dataToSort = findTheWinningNumbersForTheTicket(dataToSort, winData);
+                    localStorage.setItem('lastDisplayedList', JSON.stringify(dataToSort));
+                }
+            }
         }
     
-        if (winData) {
-            const sortedData = sortData();
-            localStorage.setItem('lastDisplayedList', JSON.stringify(sortedData));
+        if (Array.isArray(dataToSort)) {
+            let sortedData = sortData(dataToSort, sortCriteria, order);
+            console.log('here:',sortedData)
+            if (resetFlag) {
+                setDisplayData([])
+            } else {
+                setDisplayData(sortedData)
+            }
         } else {
-            sortData();
+            setDisplayData([]); // or set to a default state
         }
-    }, [sortCriteria, winData, displayData]);
+    }, [sortCriteria, order, allTicketsData, ticketsData, isAdmin, winData, gameData, gameLoading]);
+
+    const handleSort = (property) => {
+        const isAsc = sortCriteria === property && order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setSortCriteria(property);
+    };
 
     return (
         <Box sx={{ width: '100%' }}>
-            {winData &&
-                <ButtonGroup>
-                    <Button onClick={() => setSortCriteria('winningNumbers')}>Sort by Created</Button>
-                    <Button onClick={() => setSortCriteria('created')}>Sort by Winning Numbers</Button>
-                    <Button onClick={() => setSortCriteria('prize')}>Sort by Prize</Button>
-                </ButtonGroup>}
-            <TableContainer component={Paper} mt={2} sx={{ backgroundColor: 'transparent', width: '100%' }}>
-                <Table aria-label="simple table" size="large">
+            <TableContainer  mt={1} sx={{ backgroundColor: 'transparent', width: '100%', maxHeight: '400px', overflowY: 'auto' }}>
+                <Table aria-label="simple table" size="large" sx={{backgroundColor: '#0B090A'}}>
+                    {winData &&
+                        <TableHead>
+                            <TableRow>
+                                {columns.map((column) => (
+                                    (!column.isForAdmin || isAdmin) && (!column.isForWinData || winData) && (
+                                        <TableCell key={column.id} sx={{ padding: '5px', borderBottom: 'none' }}>
+                                            <TableSortLabel
+                                                active={sortCriteria === column.id}
+                                                direction={sortCriteria === column.id ? order : 'asc'}
+                                                onClick={() => handleSort(column.id)}
+                                            >
+                                                {column.label}
+                                            </TableSortLabel>
+                                        </TableCell>
+                                    )
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                    }
                     <TableBody>
                         {Array.isArray(displayData) && displayData.map((ticket, index) => (
                             <TableRow key={ticket.id}>
-                                <TableCell component="th" scope="row" style={{ borderBottom: 'none' }}>
-                                    {index + 1}
+                                <TableCell align="center" sx={{borderBottom: 'none',}}>
+                                {sortCriteria === '#' && order === 'desc' ? displayData.length - index : index + 1}
                                 </TableCell>
-                                <TableCell style={{ borderBottom: 'none' }}>
-                                    {JSON.parse(ticket.numbers).join(' ')}
-                                </TableCell>
-                                {isAdmin &&
-                                    <TableCell style={{ borderBottom: 'none' }}>
+                                <TableCell sx={{fontSize: 10, borderBottom: 'none'}}>{JSON.parse(ticket.numbers).join(' ')}</TableCell>
+                                {isAdmin && (
+                                    <TableCell sx={{borderBottom: 'none'}}>
                                         <span style={{
                                             color: ticket.is_real === 0 ? 'yellow' : 'green',
                                             textShadow: ticket.is_real === 0 ? '0 0 8px yellow' : '0 0 8px green'
@@ -89,12 +113,16 @@ const ListElement = () => {
                                             {ticket.is_real === 0 ? 'Fake' : 'Real'}
                                         </span>
                                     </TableCell>
-                                }
+                                )}
                                 {winData && (
-                                    <TableCell style={{ borderBottom: 'none' }} align="right">
-                                        Winning Numbers: {ticket.winningNumbersInTicket ? ticket.winningNumbersInTicket.length : 'None'}<br />
-                                        Prize for the ticket: {ticket.prizeAmount}
-                                    </TableCell>
+                                    <>
+                                        <TableCell align="center" sx={{borderBottom: 'none'}}>
+                                            {ticket.winningNumbersInTicket ? ticket.winningNumbersInTicket.length : 'None'}
+                                        </TableCell>
+                                        <TableCell align="center" sx={{borderBottom: 'none'}}>
+                                            {ticket.prizeAmount}
+                                        </TableCell>
+                                    </>
                                 )}
                             </TableRow>
                         ))}
@@ -102,7 +130,7 @@ const ListElement = () => {
                 </Table>
             </TableContainer>
         </Box>
-    )
+    );
 };
 
 export default ListElement;

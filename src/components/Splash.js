@@ -29,10 +29,10 @@ const ButtonPanel = () => {
         <Box width='100%' display="flex" justifyContent="center" alignItems="center" sx={{padding: 1}}>
             <Grid container spacing={2} justify="center" alignItems="center">
                 <Grid item xs={12} sm={6}>
-                    <Button onClick={handleUserRole} variant="contained" fullWidth> Jatekos Vagyok </Button>
+                    <Button onClick={handleUserRole} variant="contained" fullWidth> Player </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <Button onClick={handleAdminRole} variant="contained" fullWidth> Uzemeleteto Vagyok </Button>
+                    <Button onClick={handleAdminRole} variant="contained" fullWidth> Operator </Button>
                 </Grid>
             </Grid>
         </Box>
@@ -42,14 +42,14 @@ const ButtonPanel = () => {
 const SplashPage = () => {
     return (
         <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" flexDirection="column" >
-            <Grid container justifyItems="stretch" flexDirection='column' sx={{width: '500px', padding: 1}} xs={9}>
-                <Grid item  sx={{paddingBottom: 3}}>
+            <Grid container justifyItems="stretch" flexDirection='column' sx={{width: '500px', padding: 1}}>
+                <Grid item  sx={{paddingBottom: 3}} >
                     <TextPanel />
                 </Grid>
                 <Grid item  >
                     <ButtonPanel />
                 </Grid>
-                <Grid item>
+                <Grid item >
                     <NotesElement />
                 </Grid>
             </Grid>
