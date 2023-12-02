@@ -6,7 +6,8 @@ import Context from './context/userContext';
 import SummaryElement from './elements/Summary/Summary';
 import DrawGameComponent from './elements/DrawGame/DrawGame';
 import { Link } from 'react-router-dom';
-import { Box, Grid, Button, Typography } from '@mui/material';
+import { scrollbarStyle } from '../theme/theme';
+import { Box, Grid, Button, Typography, GlobalStyles } from '@mui/material';
 import { useContext } from 'react';
 
 const InfoPanel = () => {
@@ -23,7 +24,9 @@ const InfoPanel = () => {
 const UserPanel = () => {
     const { isAdmin, winData } = useContext(Context)
     return (
+
         <Box display="flex" justifyContent="center" alignItems="center" minHeight='100vh' flexDirection='column' >
+            <GlobalStyles styles={scrollbarStyle} />
             <Grid container justifyContent="center" alignItems="flex-start" >
                 <Grid item sx={{ width: '500px', minHeight: '300px' }}>
                     <InfoPanel />
