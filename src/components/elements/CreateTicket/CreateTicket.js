@@ -147,7 +147,7 @@ const CreateTicket = () => {
                                 {successMessage && <Alert severity='success'> {`Numbers are registered for the game!`} </Alert>}
                             </Grid>
                             <Grid item sx={{ padding: 1 }}>
-                                {!winData && <Button fullWidth onClick={playNumbers} variant="contained"> Megjatszom </Button>}
+                                {!winData && <Button fullWidth onClick={playNumbers} variant="contained"> Play Numbers </Button>}
                             </Grid>
                         </Grid>
                     </>
