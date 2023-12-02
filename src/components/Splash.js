@@ -42,7 +42,7 @@ const ButtonPanel = () => {
 const SplashPage = () => {
     return (
         <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" flexDirection="column" >
-            <Grid container justifyItems="stretch" flexDirection='column' sx={{width: '500px', padding: 1}}>
+            <Grid container justifyItems="stretch" flexDirection='column' sx={{width: '40%', padding: 1}}>
                 <Grid item  sx={{paddingBottom: 3}} >
                     <TextPanel />
                 </Grid>

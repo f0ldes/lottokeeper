@@ -23,12 +23,13 @@ const CreateFakeTickets = ({numbersArray, setNumbersArray, counter, setCounter})
                         Number of tickets to generate:
                     </Typography>
                 </Grid>
-                <Grid item sx={{ mb: 1 }}>
+                <Grid item sx={{ mb: 2 }}>
                     <TextField
                         value={counter}
                         onChange={handleInputChange}
-                        variant='outlined'
+                        variant='filled'
                         size="small"
+                        placeholder="X"
                         sx={{
                             width: '50px',
                             '& input': {
@@ -42,7 +43,7 @@ const CreateFakeTickets = ({numbersArray, setNumbersArray, counter, setCounter})
                 Generate Numbers
             </Button>
             <Box mt={2}>
-                <TableContainer component={Paper} mt={2} sx={{ backgroundColor: 'transparent' }}>
+                <TableContainer component={Paper} mt={2} sx={{ backgroundColor: 'transparent', maxHeight: '200px', overflowY: 'auto' }}>
                     <Table aria-label="simple table" size="small"> 
                         <TableBody>
                             {numbersArray && numbersArray.map((array, index) => (
