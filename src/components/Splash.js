@@ -41,18 +41,20 @@ const ButtonPanel = () => {
 
 const SplashPage = () => {
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" flexDirection="column" >
-            <Grid container justifyItems="stretch" flexDirection='column' sx={{width: '40%', padding: 1}}>
-                <Grid item  sx={{paddingBottom: 3}} >
-                    <TextPanel />
+        <Box display="flex" justifyContent="center" justifyItems="center" alignItems="center" minHeight="100%" flexDirection="column" >
+            <Box display="flex" justifyContent="center" sx={{marginY: '15%', height: '100%', width: '100%'}} >
+                <Grid container display="flex" justifyItems="center" flexDirection='column' sx={{ width: '40%', padding: 1, height: '100%' }} >
+                    <Grid item sx={{ paddingBottom: 3 }} >
+                        <TextPanel />
+                    </Grid>
+                    <Grid item >
+                        <ButtonPanel />
+                    </Grid>
+                    <Grid item >
+                        <NotesElement />
+                    </Grid>
                 </Grid>
-                <Grid item  >
-                    <ButtonPanel />
-                </Grid>
-                <Grid item >
-                    <NotesElement />
-                </Grid>
-            </Grid>
+            </Box>
         </Box>
     );
 };
