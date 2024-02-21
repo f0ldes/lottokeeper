@@ -19,7 +19,7 @@ const theme = createTheme({
         fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
         secondaryFontFamily: '"Canela"',
         fontSize: 14,
-        h1: {
+        special_1: {
           fontSize: '7rem',
           '@media (max-width:600px)': { 
             fontSize: '1.5rem',
