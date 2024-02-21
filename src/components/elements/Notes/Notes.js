@@ -20,6 +20,10 @@ const NotesElement = () => {
                 <Typography variant='body2'> 
                     Here should be a little summary, on how the game is played. 
                 </Typography>
+                <Typography variant='subtitle2' > <strong> 2. second title - for  </strong> </Typography>
+                <Typography variant='body2'> 
+                    Here should be a little summary, on how the game is played. Ellaborating on this little summary. 
+                </Typography>
             </AccordionDetails>
         </Accordion>
     )
